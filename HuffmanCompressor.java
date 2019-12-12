@@ -20,7 +20,7 @@ public class HuffmanCompressor
         System.out.println("Tree Deserialized \n-----------");
         de.printInorder(huffTreeTurned);
 
-        System.out.println("Image file writing.. \n-----------");e
+        System.out.println("Image file writing.. \n-----------");
         comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, "test6");
         System.out.println("Finished.. \n-----------");
     }   
