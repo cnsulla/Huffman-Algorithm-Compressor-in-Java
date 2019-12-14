@@ -43,13 +43,7 @@ public class ImageScan
                 cursor++;
             }
         }
-        // System.out.println("Total of "+pixels.length+" pixels read.");
         Arrays.sort(pixels);
-
-        // for (int i = 0; i<pixels.length; i++)
-        // {
-        //     System.out.println(pixels[i]);
-        // }
     }
 
     public void getAFreqList()

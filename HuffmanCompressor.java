@@ -8,7 +8,7 @@ public class HuffmanCompressor
 
     public HuffmanCompressor()
     {
-        heap = new HeapToHuff("test6");
+        heap = new HeapToHuff("256");
         HuffmanNode huffTreeOrig = heap.HuffmanConvert();
         
         
@@ -18,10 +18,11 @@ public class HuffmanCompressor
         de = new DeserializeTree("tree2.fl");
         huffTreeTurned = de.returnTree();
         System.out.println("Tree Deserialized \n-----------");
+        de.printInorder(huffTreeOrig);
         de.printInorder(huffTreeTurned);
 
         System.out.println("Image file writing.. \n-----------");
-        comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, "test6");
+        comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, "256");
         System.out.println("Finished.. \n-----------");
     }   
 

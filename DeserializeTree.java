@@ -90,8 +90,8 @@ public class DeserializeTree
         if (node == null) { 
             return; 
         } 
+        System.out.println(node.pVal + " "); 
         printInorder(node.left); 
-        System.out.print(node.pVal + " "); 
         printInorder(node.right); 
     } 
 }

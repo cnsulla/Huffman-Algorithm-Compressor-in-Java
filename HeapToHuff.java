@@ -12,7 +12,7 @@ public class HeapToHuff
     public void getPArray(String FILEPATH)
     {
         list = imgScan.ImageScan(FILEPATH);
-        imgScan.showList(list);
+        // imgScan.showList(list);
         pq = new PriorityQueue(list.length);
 
         int testerX = 0;
@@ -29,7 +29,7 @@ public class HeapToHuff
 
     public HuffmanNode HuffmanConvert()
     {
-        System.out.println("Called Tree Conversion with initial size: "+pq.getSize());
+        // System.out.println("Called Tree Conversion with initial size: "+pq.getSize());
         while (pq.getSize() > 1)
         {
             HuffmanNode leftNode = pq.dequeue();
