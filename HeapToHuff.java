@@ -27,7 +27,7 @@ public class HeapToHuff
         System.out.println(testerX);
     }
 
-    public HuffmanNode HuffmanConvert()
+    public HuffmanNode getHuffmanTree()
     {
         // System.out.println("Called Tree Conversion with initial size: "+pq.getSize());
         while (pq.getSize() > 1)
