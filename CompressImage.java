@@ -10,8 +10,10 @@ public class CompressImage
 {
     private HuffmanNode[] bStringArr;
     private int[] pixels;
-    private int ptrIndex = 0, cursor = 0;
+    private int ptrIndex = 0, cursor = 0, length = 0;
     private BufferedImage img = null;
+    private HuffmanNode write = new HuffmanNode(0);
+    
 
     public CompressImage(HuffmanNode node, int size, String IMGFILEPATH)
     {
@@ -19,11 +21,13 @@ public class CompressImage
         getStringArr(node, 0);
 
         readImage(IMGFILEPATH, node.freq);
+        this.write.setBitString(99);
         writeFile();
     }
 
     private void readImage(String FILEPATH, int size)
     {
+
         try {
             File f = new File(FILEPATH + ".png");
             this.img = ImageIO.read(f);
@@ -40,19 +44,7 @@ public class CompressImage
                 cursor++;
             }
         }
-    }
 
-    private HuffmanNode getBits(int pVal)
-    {
-        for (int i = 0; i < bStringArr.length; i++)
-        {
-            if (pVal == bStringArr[i].pVal)
-            {
-                System.out.println("writing pixel: " + pVal + " with string: " + bStringArr[i].bitString + " " + bStringArr[i].pVal + " " + i);
-                return bStringArr[i];
-            }
-        }
-        return null;
     }
 
     public void getStringArr(HuffmanNode node, int bit)
@@ -74,18 +66,54 @@ public class CompressImage
         ptrIndex++;
     }
 
+    private HuffmanNode getBits(int pVal)
+    {
+        for (int i = 0; i < bStringArr.length; i++)
+        {
+            if (pVal == bStringArr[i].pVal)
+            {
+                return bStringArr[i];
+            }
+        }
+        return null;
+    }
+
+    private boolean writeInt(HuffmanNode add)
+    {
+        while ((add.getBitString() & 0xff) != 0)
+        {
+            if (this.length == 32)
+            {
+                return true;
+            }
+
+            this.length += 8;
+            
+            this.write.setBitString(((add.getBitString() >> 8) & 0xff));
+            System.out.print(Integer.toBinaryString(this.write.getBitString()) + " " + this.length + " ");
+
+            add.setBitString(add.getBitString() >> 8);
+            System.out.println(Integer.toBinaryString(add.getBitString()));
+        }
+        return false;
+    }
+
     public void writeFile()
     {
         try(FileOutputStream out = new FileOutputStream("imgcompressed.XLV", true)){
             for (int i = 0 ; i < pixels.length; i++)
             {
-                
                 HuffmanNode in = getBits(pixels[i]);
-                out.write( (byte) (in.getBitString() >> 24 ) & 0xff);
-                out.write( (byte) (in.getBitString() >> 16 ) & 0xff);
-                out.write( (byte) (in.getBitString() >> 8 ) & 0xff);
-                out.write( (byte) (in.getBitString() & 0xff) );
-
+                if (writeInt(in) == true)
+                {
+                    System.out.println("writing pixel: " + in.pVal + " with string: " + this.write.bitString + " " + i);
+                    out.write( (byte) (this.write.getBitString()>>24 & 0xff) );
+                    out.write( (byte) (this.write.getBitString()>>16 & 0xff) );
+                    out.write( (byte) (this.write.getBitString()>>8 & 0xff) );
+                    out.write( (byte) (this.write.getBitString() & 0xff) );
+                    this.length = 0;
+                    this.write.setBitString(0);
+                }
                 // System.out.println( fileContent.get(i) + " " + i);
             }
         } catch (FileNotFoundException e) {
