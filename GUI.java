@@ -279,7 +279,7 @@ public class GUI extends JFrame implements ActionListener{
                 System.out.println(name);
 
                 HeapToHuff heap = new HeapToHuff(name);
-                HuffmanNode node = heap.HuffmanConvert();
+                HuffmanNode node = heap.getHuffmanTree();
                 //SerializeTree en = new SerializeTree(node, node.freq);
             }
         }
