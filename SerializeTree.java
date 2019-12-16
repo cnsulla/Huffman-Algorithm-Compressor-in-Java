@@ -3,7 +3,6 @@ import java.util.*;
 
 public class SerializeTree
 {
-    // private int[] preOrder;
     private ArrayList<Integer> pOrder = new ArrayList<Integer>(0); 
 
     public SerializeTree(HuffmanNode node)//(must accept filename later)
