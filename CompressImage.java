@@ -113,15 +113,22 @@ public class CompressImage
             out.write( ((byte) xSize >> 16) & 0xff);
             out.write( ((byte) xSize >> 8) & 0xff);
             out.write( ((byte) xSize) & 0xff);
-            System.out.print(xSize + " x ");
+            // System.out.println(Integer.toBinaryString((xSize >> 24) & 0xff));
+            // System.out.println(Integer.toBinaryString((xSize >> 16) & 0xff));
+            // System.out.println(Integer.toBinaryString((xSize >> 8) & 0xff));
+            // System.out.println(Integer.toBinaryString((xSize) & 0xff));
+            // System.out.println(xSize);
             
             out.write( ((byte) ySize >> 24) & 0xff);
             out.write( ((byte) ySize >> 16) & 0xff);
             out.write( ((byte) ySize >> 8) & 0xff);
             out.write( ((byte) ySize) & 0xff);
-            System.out.println(ySize);
+            // System.out.println(Integer.toBinaryString((ySize >> 24) & 0xff));
+            // System.out.println(Integer.toBinaryString((ySize >> 16) & 0xff));
+            // System.out.println(Integer.toBinaryString((ySize >> 8) & 0xff));
+            // System.out.println(Integer.toBinaryString((ySize) & 0xff));
+            // System.out.println(ySize);
             
-
             for (int i = 0 ; i < pixels.length; i++)
             {
                 HuffmanNode in = getBits(pixels[i]);

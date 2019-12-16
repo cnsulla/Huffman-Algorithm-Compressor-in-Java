@@ -7,7 +7,7 @@ public class HuffmanCompressor
     CompressImage comp;
     DecompressImage decomp;
 
-    String imgIn = "test6";
+    String imgIn = "512x288";
     String treeOut = "tree2.fl";
     String imgOut = "compressed.xl";
 
@@ -15,7 +15,6 @@ public class HuffmanCompressor
     {
         heap = new HeapToHuff(imgIn);
         HuffmanNode huffTreeOrig = heap.getHuffmanTree();
-        
         
         en = new SerializeTree(huffTreeOrig);
         System.out.println("Tree Serialized \n-------------");
@@ -26,9 +25,10 @@ public class HuffmanCompressor
         // de.printInorder(huffTreeOrig);
         // de.printInorder(huffTreeTurned);
 
-        System.out.println("Image file writing.. \n-----------");
+        System.out.println("Image file writing...\n-----------");
         comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, imgIn, imgOut);
-        System.out.println("Finished.. \n-----------");
+        System.out.println("Finished... \n-----------");
+
         decomp = new DecompressImage(huffTreeOrig, treeOut, imgOut);
     }   
 

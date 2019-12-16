@@ -45,6 +45,7 @@ public class DeserializeTree
 
         int[] outArr = new int[bArray.length / 4];
         ByteBuffer bb = ByteBuffer.wrap(bArray);
+        
         for (int i = 0; i < outArr.length; i++)
         {
             outArr[i] = bb.getInt();
