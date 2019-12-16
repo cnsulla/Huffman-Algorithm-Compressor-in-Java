@@ -10,18 +10,20 @@ public class CompressImage
 {
     private HuffmanNode[] bStringArr;
     private int[] pixels;
-    private int ptrIndex = 0, cursor = 0, length = 0;
+    private int ptrIndex = 0, cursor = 0, length = 0, xSize, ySize;
     private BufferedImage img = null;
     private HuffmanNode write = new HuffmanNode(0);
+    private String DESTINATION;
     
 
-    public CompressImage(HuffmanNode node, int size, String IMGFILEPATH)
+    public CompressImage(HuffmanNode node, int size, String IMGFILEPATH, String DEST)
     {
+        this.DESTINATION = DEST;
         bStringArr = new HuffmanNode[size];
         getStringArr(node, 0);
 
         readImage(IMGFILEPATH, node.freq);
-        this.write.setBitString(99);
+        this.write.setBitString(1);
         writeFile();
     }
 
@@ -45,12 +47,15 @@ public class CompressImage
             }
         }
 
+        this.xSize = img.getWidth();
+        this.ySize = img.getHeight();
     }
 
     public void getStringArr(HuffmanNode node, int bit)
     {
         if (node.left == null && node.right == null)
         {
+            bit = bit<<1 | 1;
             node.setBitString(bit);
             addToArr( node );
             return;
@@ -82,38 +87,47 @@ public class CompressImage
     {
         while ((add.getBitString() & 0xff) != 0)
         {
-            if (this.length == 32)
+            if (this.length == 8)
             {
+                this.write.setBitString(this.write.getBitString() & (0xff >> 8-length));
                 return true;
             }
 
-            this.length += 8;
-            
-            this.write.setBitString(this.write.getBitString() | ((add.getBitString()) & 0xff));
-            // System.out.print(Integer.toBinaryString(this.write.getBitString()) + " " + this.length + " ");
+            this.length += 1;
 
-            add.setBitString(add.getBitString() >> 8);
-            // System.out.println(Integer.toBinaryString(add.getBitString()));
+            // System.out.print(Integer.toBinaryString(add.getBitString()) + " -> ");
+            this.write.setBitString(this.write.getBitString() << 1 | ((add.getBitString()) & 1));
+            // System.out.print(Integer.toBinaryString(this.write.getBitString()) + " new: ");
+
+            add.setBitString(add.getBitString() >> 1);
+            // System.out.println(Integer.toBinaryString(add.getBitString()) + " " + this.length);
         }
         return false;
     }
 
-    public void writeFile()
+    private void writeFile()
     {
-        try(FileOutputStream out = new FileOutputStream("imgcompressed.XLV", true)){
+        try(FileOutputStream out = new FileOutputStream(DESTINATION, true)){
+            
+            out.write( (byte) xSize >> 24 & 0xff);
+            out.write( (byte) xSize >> 16 & 0xff);
+            out.write( (byte) xSize >> 8 & 0xff);
+            out.write( (byte) xSize & 0xff);
+            out.write( (byte) ySize >> 24 & 0xff);
+            out.write( (byte) ySize >> 16 & 0xff);
+            out.write( (byte) ySize >> 8 & 0xff);
+            out.write( (byte) ySize & 0xff);
+
             for (int i = 0 ; i < pixels.length; i++)
             {
                 HuffmanNode in = getBits(pixels[i]);
                 // System.out.println("currently writing to int: " + in.getBitString());   
-                if (writeInt(in))
+                if (i == pixels.length-1 || writeInt(in))
                 {
-                    // System.out.println("writing pixel: " + in.pVal + " with string: " + this.write.bitString + " " + i);
-                    out.write( (byte) (this.write.getBitString()>>24 & 0xff) );
-                    out.write( (byte) (this.write.getBitString()>>16 & 0xff) );
-                    out.write( (byte) (this.write.getBitString()>>8 & 0xff) );
+                    // System.out.println("writing pixel: " + in.pVal + " with string: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
                     out.write( (byte) (this.write.getBitString() & 0xff) );
                     this.length = 0;
-                    this.write.setBitString(0);
+                    this.write.setBitString(1);
                 }
                 // System.out.println( fileContent.get(i) + " " + i);
             }

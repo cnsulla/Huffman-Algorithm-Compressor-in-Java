@@ -22,7 +22,7 @@ public class HuffmanCompressor
         // de.printInorder(huffTreeTurned);
 
         System.out.println("Image file writing.. \n-----------");
-        comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, "test4");
+        comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, "test4", "compressed.XLV");
         System.out.println("Finished.. \n-----------");
     }   
 
