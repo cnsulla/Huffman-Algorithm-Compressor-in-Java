@@ -109,21 +109,22 @@ public class CompressImage
     {
         try(FileOutputStream out = new FileOutputStream(DESTINATION, true)){
 
-            out.write( ((byte) xSize >> 24) & 0xff);
-            out.write( ((byte) xSize >> 16) & 0xff);
-            out.write( ((byte) xSize >> 8) & 0xff);
-            out.write( ((byte) xSize) & 0xff);
+            // out.write( ((byte) xSize >> 24) & 0xff);
+            // out.write( ((byte) xSize >> 16) & 0xff);
+            // out.write( ((byte) xSize >> 8) & 0xff);
+            // out.write( ((byte) xSize) & 0xff);
 
             // System.out.println(Integer.toBinaryString((xSize >> 24) & 0xff));
             // System.out.println(Integer.toBinaryString((xSize >> 16) & 0xff));
             // System.out.println(Integer.toBinaryString((xSize >> 8) & 0xff));
             // System.out.println(Integer.toBinaryString((xSize) & 0xff));
-            // System.out.println(xSize);
+            // System.out.println("---");
+            // // System.out.println(xSize);
             
-            out.write( ((byte) ySize >> 24) & 0xff);
-            out.write( ((byte) ySize >> 16) & 0xff);
-            out.write( ((byte) ySize >> 8) & 0xff);
-            out.write( ((byte) ySize) & 0xff);
+            // out.write( ((byte) ySize >> 24) & 0xff);
+            // out.write( ((byte) ySize >> 16) & 0xff);
+            // out.write( ((byte) ySize >> 8) & 0xff);
+            // out.write( ((byte) ySize) & 0xff);
 
             // System.out.println(Integer.toBinaryString((ySize >> 24) & 0xff));
             // System.out.println(Integer.toBinaryString((ySize >> 16) & 0xff));
@@ -137,7 +138,7 @@ public class CompressImage
                 // System.out.println("currently writing to int: " + in.getBitString());
                 if (i == pixels.length-1 || writeInt(in))
                 {
-                    // System.out.println("writing string: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
+                    System.out.println("writing string: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
                     out.write( (byte) (this.write.getBitString() & 0xff) );
                     this.length = 0;
                     this.write.setBitString(1);

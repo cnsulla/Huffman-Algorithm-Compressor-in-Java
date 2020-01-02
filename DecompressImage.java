@@ -49,11 +49,13 @@ public class DecompressImage
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
-            for (int i = 0; i < 8; i++)
-            {
-                bArray[i] = (byte) in.read();
-                System.out.println(Integer.toBinaryString(bArray[i] & 0xff));
-            }
+            in.read(bArray, 0, 8);
+
+            // for (int i = 0; i < 8; i++)
+            // {
+            //     // bArray[i] = (byte) in.read();
+            //     System.out.println(Integer.toBinaryString(bArray[i] & 0xff));
+            // }
             
             in.close();
 
