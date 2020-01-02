@@ -19,7 +19,7 @@ public class CompressImage
     {
         this.DESTINATION = DEST;
         bStringArr = new HuffmanNode[size];
-        getStringArr(node, 0);
+        getStringArr(node, 1);
 
         readImage(IMGFILEPATH, node.freq);
         this.write.setBitString(1);
@@ -83,24 +83,35 @@ public class CompressImage
         return null;
     }
 
-    private boolean writeInt(HuffmanNode add)
+    private boolean writeByte(int add)
     {
-        while ((add.getBitString()) != 0)
+
+        System.out.println("Accepted: " + Integer.toBinaryString(add));
+        int i = 32;
+        while (i > 0)
+        {
+            i--;
+
+            if (((add>>(i-1)) & 1) == 1)
+            {
+                i--;
+                System.out.println("i = " + i);
+                break;
+            }
+        }
+
+        while ((add) != 0 || i > 0)
         {
             if (this.length == 8)
             {
-                this.write.setBitString(this.write.getBitString() & (0xff >> 8-length));
                 return true;
             }
 
             this.length += 1;
-
-            System.out.print(Integer.toBinaryString( add.getBitString() ) + " -> ");
-            this.write.setBitString(this.write.getBitString() << 1 | ((add.getBitString()) & 1));
-            System.out.print(Integer.toBinaryString( this.write.getBitString() ) + " new: ");
-
-            add.setBitString(add.getBitString() >> 1);
-            System.out.println(Integer.toBinaryString( add.getBitString() ) + " " + this.length);
+            System.out.print("(" + Integer.toBinaryString((add >> (i-1)) & 1) +") -> ");
+            this.write.setBitString((this.write.getBitString() & ((add >> (i-1)) & 1)));
+            System.out.println(Integer.toBinaryString(this.write.getBitString())  + " " + length);
+            i--;
         }
         return false;
     }
@@ -122,8 +133,7 @@ public class CompressImage
             for (int i = 0 ; i < pixels.length; i++)
             {
                 HuffmanNode in = getBits(pixels[i]);
-                // System.out.println("currently writing to int: " + in.getBitString());
-                if (i == pixels.length-1 || writeInt(in))
+                if (i == pixels.length-1 || writeByte(in.getBitString()))
                 {
                     System.out.println("writing string: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
                     out.write( (byte) (this.write.getBitString() & 0xff) );
