@@ -85,7 +85,7 @@ public class CompressImage
 
     private boolean writeInt(HuffmanNode add)
     {
-        while ((add.getBitString() & 0xff) != 0)
+        while ((add.getBitString()) != 0)
         {
             if (this.length == 8)
             {
@@ -95,12 +95,12 @@ public class CompressImage
 
             this.length += 1;
 
-            // System.out.print(Integer.toBinaryString(add.getBitString()) + " -> ");
+            System.out.print(Integer.toBinaryString( add.getBitString() ) + " -> ");
             this.write.setBitString(this.write.getBitString() << 1 | ((add.getBitString()) & 1));
-            // System.out.print(Integer.toBinaryString(this.write.getBitString()) + " new: ");
+            System.out.print(Integer.toBinaryString( this.write.getBitString() ) + " new: ");
 
             add.setBitString(add.getBitString() >> 1);
-            // System.out.println(Integer.toBinaryString(add.getBitString()) + " " + this.length);
+            System.out.println(Integer.toBinaryString( add.getBitString() ) + " " + this.length);
         }
         return false;
     }
@@ -109,28 +109,15 @@ public class CompressImage
     {
         try(FileOutputStream out = new FileOutputStream(DESTINATION, true)){
 
-            // out.write( ((byte) xSize >> 24) & 0xff);
-            // out.write( ((byte) xSize >> 16) & 0xff);
-            // out.write( ((byte) xSize >> 8) & 0xff);
-            // out.write( ((byte) xSize) & 0xff);
-
-            // System.out.println(Integer.toBinaryString((xSize >> 24) & 0xff));
-            // System.out.println(Integer.toBinaryString((xSize >> 16) & 0xff));
-            // System.out.println(Integer.toBinaryString((xSize >> 8) & 0xff));
-            // System.out.println(Integer.toBinaryString((xSize) & 0xff));
-            // System.out.println("---");
-            // // System.out.println(xSize);
+            out.write( (byte) (xSize >> 24 & 0xff));
+            out.write( (byte) (xSize >> 16 & 0xff));
+            out.write( (byte) (xSize >> 8 & 0xff));
+            out.write( (byte) (xSize & 0xff));
             
-            // out.write( ((byte) ySize >> 24) & 0xff);
-            // out.write( ((byte) ySize >> 16) & 0xff);
-            // out.write( ((byte) ySize >> 8) & 0xff);
-            // out.write( ((byte) ySize) & 0xff);
-
-            // System.out.println(Integer.toBinaryString((ySize >> 24) & 0xff));
-            // System.out.println(Integer.toBinaryString((ySize >> 16) & 0xff));
-            // System.out.println(Integer.toBinaryString((ySize >> 8) & 0xff));
-            // System.out.println(Integer.toBinaryString((ySize) & 0xff));
-            // System.out.println(ySize);
+            out.write( (byte) (ySize >> 24 & 0xff));
+            out.write( (byte) (ySize >> 16 & 0xff));
+            out.write( (byte) (ySize >> 8 & 0xff));
+            out.write( (byte) (ySize & 0xff));
             
             for (int i = 0 ; i < pixels.length; i++)
             {
