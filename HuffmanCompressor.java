@@ -7,7 +7,7 @@ public class HuffmanCompressor
     CompressImage comp;
     DecompressImage decomp;
 
-    String imgIn = "250x250";
+    String imgIn = "1080";
     String treeOut = "tree2.fl";
     String imgOut = "compressed.xl";
 
