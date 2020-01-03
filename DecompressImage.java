@@ -12,6 +12,7 @@ public class DecompressImage
     private int x, y;
     private BufferedImage bfrdImage;
     private File image;
+    private byte[] bArray;
 
     public DecompressImage(HuffmanNode tree, String TREEFILEPATH, String IMGFILEPATH)
     {
@@ -23,7 +24,7 @@ public class DecompressImage
     private BufferedImage drawImage(String imageFile, HuffmanNode node)
     {
         this.bfrdImage = new BufferedImage(this.x, this.y, BufferedImage.TYPE_INT_RGB);
-        byte[] bArray = new byte[this.x*this.y];
+        bArray = new byte[this.x*this.y];
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
@@ -35,41 +36,36 @@ public class DecompressImage
         } catch (IOException e) {
             System.out.println(e);
         }
+
         int i = 0;
-        for (int b = 0; b < this.y; b++)
+
+        while (i < bArray.length)
         {
-            for (int v = 0; v < this.x; v++)
-            {
-                while (i < bArray.length)
-                {
-                    int pixel = traverseTree(node, bArray[i]);
-                    Color pix = new Color(pixel);
-                    bfrdImage.setRGB(x, y, pix.getRGB());
-                }
-            }
+            traverseTree(node, bArray[i], 8);
+            i++;
         }
 
         return bfrdImage;
     }
 
-    private int traverseTree(HuffmanNode node, byte bit)
+    private void traverseTree(HuffmanNode node, byte bit, int off)
     {
         if (node.right == null && node.left == null)
         {
-            return node.pVal;
+            Color pix = new Color(node.pVal);
+            bfrdImage.setRGB(x, y, pix.getRGB());
+            return;
         }
 
-        else if ((bit & 1) == 0)
+        else if (((bit >> (off-1)) & 1) == 0)
         {
-            traverseTree(node.left, (byte) (bit >> 1));
+            traverseTree(node.left, (byte) (bit >> 1), off--);
         }
 
-        else if ((bit & 1) == 1)
+        else if (((bit >> (off-1)) & 1) == 1)
         {
-            traverseTree(node.right, (byte) (bit >> 1));
+            traverseTree(node.right, (byte) (bit >> 1), off--);
         }
-
-        return 0;
     }
 
     private void readImgDimensions(File imageFile)
