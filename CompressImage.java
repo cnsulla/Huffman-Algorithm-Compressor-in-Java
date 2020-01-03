@@ -22,7 +22,7 @@ public class CompressImage
         getStringArr(node, 1);
 
         readImage(IMGFILEPATH, node.freq);
-        this.write.setBitString(1);
+        this.write.setBitString(0);
         writeFile();
     }
 
@@ -67,6 +67,7 @@ public class CompressImage
 
     private void addToArr(HuffmanNode input)
     {
+        System.out.println("Pixel: " + input.pVal + " has string: " + Integer.toBinaryString(input.bitString));
         bStringArr[this.ptrIndex] = input;
         ptrIndex++;
     }
@@ -77,6 +78,7 @@ public class CompressImage
         {
             if (pVal == bStringArr[i].pVal)
             {
+                // System.out.print("Accepted pixel :" + bStringArr[i].pVal);
                 return bStringArr[i];
             }
         }
@@ -86,7 +88,7 @@ public class CompressImage
     private boolean writeByte(int add)
     {
 
-        System.out.println("Accepted: " + Integer.toBinaryString(add));
+        // System.out.print(" with string " + Integer.toBinaryString(add));
         int i = 32;
         while (i > 0)
         {
@@ -95,12 +97,12 @@ public class CompressImage
             if (((add>>(i-1)) & 1) == 1)
             {
                 i--;
-                System.out.println("i = " + i);
+                // System.out.println(", offset = " + i);
                 break;
             }
         }
 
-        while ((add) != 0 || i > 0)
+        while (i>0)
         {
             if (this.length == 8)
             {
@@ -108,9 +110,13 @@ public class CompressImage
             }
 
             this.length += 1;
-            System.out.print("(" + Integer.toBinaryString((add >> (i-1)) & 1) +") -> ");
-            this.write.setBitString((this.write.getBitString() & ((add >> (i-1)) & 1)));
-            System.out.println(Integer.toBinaryString(this.write.getBitString())  + " " + length);
+            this.write.setBitString(this.write.getBitString() << 1);
+
+            // System.out.print("(" + Integer.toBinaryString((add >> (i-1)) & 1) +") -> ");
+
+            this.write.setBitString((this.write.getBitString()) | ((add >> (i-1)) & 1));
+
+            // System.out.println(Integer.toBinaryString(this.write.getBitString())  + " " + length);
             i--;
         }
         return false;
@@ -135,10 +141,10 @@ public class CompressImage
                 HuffmanNode in = getBits(pixels[i]);
                 if (i == pixels.length-1 || writeByte(in.getBitString()))
                 {
-                    System.out.println("writing string: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
+                    // System.out.println("writing string: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
                     out.write( (byte) (this.write.getBitString() & 0xff) );
                     this.length = 0;
-                    this.write.setBitString(1);
+                    this.write.setBitString(0);
                 }
             }
         } catch (FileNotFoundException e) {
