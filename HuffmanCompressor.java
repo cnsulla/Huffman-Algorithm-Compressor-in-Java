@@ -19,7 +19,7 @@ public class HuffmanCompressor
         heap = new HeapToHuff(imgIn);
         HuffmanNode huffTreeOrig = heap.getHuffmanTree();
         
-        en = new SerializeTree(huffTreeOrig);
+        en = new SerializeTree(huffTreeOrig, " ", treeOut);
         System.out.println("Tree Serialized \n-------------");
 
         de = new DeserializeTree(treeOut);

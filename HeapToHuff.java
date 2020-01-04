@@ -12,7 +12,6 @@ public class HeapToHuff
     public void getPArray(String FILEPATH)
     {
         list = imgScan.ImageScan(FILEPATH);
-        // imgScan.showList(list);
         pq = new PriorityQueue(list.length);
 
         int testerX = 0;

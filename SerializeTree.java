@@ -4,11 +4,13 @@ import java.util.*;
 public class SerializeTree
 {
     private ArrayList<Integer> pOrder = new ArrayList<Integer>(0); 
+    private String filename;
 
-    public SerializeTree(HuffmanNode node)//(must accept filename later)
+    public SerializeTree(HuffmanNode node, String directory, String fn)
     {
+        filename = fn;
         try { 
-            File f = new File("tree2.fl");
+            File f = new File(filename);
             f.createNewFile();
         }
         catch (Exception e) {
@@ -16,15 +18,15 @@ public class SerializeTree
         }
 
         storeTree(node);
-        writeToFile(pOrder);
+        writeToFile(pOrder, directory);
     }
 
 
-    public void writeToFile(ArrayList<Integer> fileContent)//(include filename reference later)
+    public void writeToFile(ArrayList<Integer> fileContent, String dir)//(include filename reference later)
     {
         int i = 0;
 
-        try(FileOutputStream out = new FileOutputStream("tree2.fl", true)){
+        try(FileOutputStream out = new FileOutputStream((dir+filename), true)){
             while (i < fileContent.size())
             {
                 out.write( (byte) ((fileContent.get(i)) >> 24 ) & 0xff);

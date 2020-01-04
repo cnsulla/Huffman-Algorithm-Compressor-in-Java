@@ -34,6 +34,8 @@ public class GUI extends JFrame implements ActionListener{
     private ImageIcon compressedBG;
     private HeapToHuff heap;
     private HuffmanNode huffTreeOrig;
+    private CompressImage comp;
+    private DecompressImage decomp;
 
     public static void main(String[] args) 
     {
@@ -282,7 +284,7 @@ public class GUI extends JFrame implements ActionListener{
 
                 heap = new HeapToHuff(name);
                 huffTreeOrig = heap.getHuffmanTree();
-                //SerializeTree en = new SerializeTree(node, node.freq);
+                SerializeTree en = new SerializeTree(huffTreeOrig, directory.getParentFile().getName(), "treefile.fl");
             }
         }
 
