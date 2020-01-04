@@ -22,7 +22,7 @@ public class SerializeTree
     }
 
 
-    public void writeToFile(ArrayList<Integer> fileContent, String dir)
+    public void writeToFile(ArrayList<Integer> fileContent, String dir)//(include filename reference later)
     {
         int i = 0;
 

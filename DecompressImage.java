@@ -24,10 +24,10 @@ public class DecompressImage
         drawImage(IMGFILEPATH, tree);
     }
 
-    private BufferedImage drawImage(String imageFile, HuffmanNode node)
+    public BufferedImage drawImage(String imageFile, HuffmanNode node)
     {
         this.bfrdImage = new BufferedImage(this.x, this.y, BufferedImage.TYPE_INT_RGB);
-        bArray = new byte[(int) image.length()-8];
+        bArray = new byte[(int) image.length()];
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
