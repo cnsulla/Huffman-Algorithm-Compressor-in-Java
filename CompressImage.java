@@ -67,7 +67,7 @@ public class CompressImage
 
     private void addToArr(HuffmanNode input)
     {
-        System.out.println("Pixel: " + input.pVal + " has string: " + Integer.toBinaryString(input.bitString));
+        // System.out.println("Pixel: " + input.pVal + " has string: " + Integer.toBinaryString(input.bitString));
         bStringArr[this.ptrIndex] = input;
         ptrIndex++;
     }
@@ -102,7 +102,7 @@ public class CompressImage
             for (int i = 0 ; i < pixels.length; i++)
             {
                 HuffmanNode in = getBits(pixels[i]);
-                // System.out.print(" with string " + Integer.toBinaryString(in.getBitString()));
+                // System.out.println(" with string " + Integer.toBinaryString(in.getBitString()));
                 int pos = 32;
                 while (((in.getBitString()>>(pos-1)) & 1) != 1)
                 {
@@ -116,7 +116,7 @@ public class CompressImage
                 {
                     if (this.length == 8 && i != pixels.length-1)
                     {
-                        System.out.println("WRITE: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
+                        // System.out.println("WRITE: " + Integer.toBinaryString(this.write.bitString & 0xff) + " " + i);
                         out.write( (byte) (this.write.getBitString() & 0xff) );
                         this.length = 0;
                         this.write.setBitString(0);
@@ -134,7 +134,7 @@ public class CompressImage
 
                     if (pos == 1 && this.length <= 8 && i == pixels.length-1)
                     {
-                        System.out.println("FINAL WRITE: " + Integer.toBinaryString((this.write.getBitString() << (8-length)) & 0xff) + " " + i);
+                        // System.out.println("FINAL WRITE: " + Integer.toBinaryString((this.write.getBitString() << (8-length)) & 0xff) + " " + i);
                         out.write( (byte) ((this.write.getBitString() << (8-length)) & 0xff) );
                     }
 

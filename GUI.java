@@ -285,20 +285,20 @@ public class GUI extends JFrame implements ActionListener{
 
                 heap = new HeapToHuff(name);
                 huffTreeOrig = heap.getHuffmanTree();
-                SerializeTree en = new SerializeTree(huffTreeOrig, directory.getParentFile().getName(), "treefile.fl");
+                SerializeTree en = new SerializeTree(huffTreeOrig, "treefile.fl");
             }
         }
 
-        /* if(e.getSource() == trainExistingButton)
-        {
-            file = getFile(2);
+        //  if(e.getSource() == trainExistingButton)
+        // {
+        //     file = getFile(2);
 
-            if(file != null)
-            {
-                compressImageButton.setEnabled(true);    
-                directory = getDirectory();
-            }
-        }*/
+        //     if(file != null)
+        //     {
+        //         compressImageButton.setEnabled(true);    
+        //         directory = getDirectory();
+        //     }
+        // }
 
         if(e.getSource() == compressImageButton)
         {
@@ -310,32 +310,33 @@ public class GUI extends JFrame implements ActionListener{
         {
             
         	file = getFile(3);
-        	decomp = new DecompressImage(huffTreeOrig, "mama", "hello.xl");
+        	decomp = new DecompressImage("", "hello.xl");
         	compressedLabel.setVisible(false);
             compressedPanel.setBackground(null);
         	compressedImage.setIcon(new ImageIcon(decomp.drawImage("hello.xl", huffTreeOrig)));
             informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
-            /*file = getFile(2);
 
-            if(file != null)
-            {
-            	file = getFile(3);
-            	if(file != null)
-            	{
-            		informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
+            // file = getFile(2);
+
+            // if(file != null)
+            // {
+            // 	file = getFile(3);
+            // 	if(file != null)
+            // 	{
+            // 		informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
             		
 
-            		compressedLabel.setVisible(false);
-            		compressedPanel.setBackground(null);
+            // 		compressedLabel.setVisible(false);
+            // 		compressedPanel.setBackground(null);
 
-		            compressedImage.setIcon(new ImageIcon(file.getAbsolutePath()));
-        		    compressedPanel.add(compressedScroll);
+		    //         compressedImage.setIcon(new ImageIcon(file.getAbsolutePath()));
+        	// 	    compressedPanel.add(compressedScroll);
             
-		            compressedScroll.setPreferredSize(new Dimension(395,395));
-        		    compressedScroll.setViewportView(compressedImage);
+		    //         compressedScroll.setPreferredSize(new Dimension(395,395));
+        	// 	    compressedScroll.setViewportView(compressedImage);
 
-            	}
-            }*/
+            // 	}
+            // }
         }
 
         if(e.getSource() == resetButton)

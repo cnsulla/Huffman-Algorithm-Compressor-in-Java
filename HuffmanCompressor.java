@@ -19,7 +19,7 @@ public class HuffmanCompressor
         heap = new HeapToHuff(imgIn);
         HuffmanNode huffTreeOrig = heap.getHuffmanTree();
         
-        en = new SerializeTree(huffTreeOrig, "", treeOut);
+        en = new SerializeTree(huffTreeOrig, treeOut);
         System.out.println("Tree Serialized \n-------------");
 
         de = new DeserializeTree(treeOut);
@@ -32,7 +32,7 @@ public class HuffmanCompressor
         comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, imgIn, imgOut);
         System.out.println("Finished... \n-----------");
 
-        decomp = new DecompressImage(huffTreeOrig, treeOut, imgOut);
+        decomp = new DecompressImage(treeOut, imgOut);
     }   
 
     public static void main(String[] args)

@@ -17,17 +17,16 @@ public class DecompressImage
     private byte bit;
     private int pos = 8;
 
-    public DecompressImage(HuffmanNode tree, String TREEFILEPATH, String IMGFILEPATH)
+    public DecompressImage(String TREEFILEPATH, String IMGFILEPATH)
     {
         image = new File(IMGFILEPATH);
         readImgDimensions(image);
-        drawImage(IMGFILEPATH, tree);
     }
 
     public BufferedImage drawImage(String imageFile, HuffmanNode node)
     {
         this.bfrdImage = new BufferedImage(this.x, this.y, BufferedImage.TYPE_INT_RGB);
-        bArray = new byte[(int) image.length()];
+        bArray = new byte[((int) image.length())];
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
@@ -44,38 +43,47 @@ public class DecompressImage
         HuffmanNode head = node;
         int i = 8;
 
+        // for (int l = 0 ; l < bArray.length; l++)
+        // {
+        //     System.out.println(String.format("%02x",bArray[l]) + " " + l);
+        // }
+
         while (i < bArray.length)
         {
             
             this.bit = bArray[i];
-            // System.out.println("Current: " + Integer.toBinaryString(((bit)) & 0xff) + " at index " + (i-8));
+            // System.out.println("Current: " + Integer.toBinaryString(((bit)) & 0xff) + " at index " + (i));
 
             while (this.pos > 0)
             {
                 if (node.right == null && node.left == null)
                 {
+                    pos--;
                     // System.out.println(Integer.toBinaryString(string) + " pos: " + pos);
-                    // System.out.println("leaf node " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at " +( fx+1 )+ ", " +( fy+1));
+                    // System.out.println("leaf node " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at " +( this.fx )+ ", " +( this.fy));
                     Color pix = new Color(node.pVal);
                     bfrdImage.setRGB(this.fx, this.fy, pix.getRGB());
                     imgDims(); 
                     node = head;
+                    
                     break;
                 }
 
                 else if ((((bit) >> (pos-1)) & 1 ) == 0)
                 {
                     string = string << 1;
+                    pos--;
                     // System.out.println(Integer.toBinaryString(string) + " pos: " + pos);
                     node = node.left;
-                    pos--;
+                    
                 }
                 else if ((((bit) >> (pos-1)) & 1 ) == 1)
                 {
                     string = string << 1 | 1;
+                    pos--;
                     // System.out.println(Integer.toBinaryString(string) +" pos: " + pos);
                     node = node.right;
-                    pos--;
+                    
                 }
             }
 
@@ -105,6 +113,10 @@ public class DecompressImage
         {
             fx = 0;
             fy++;
+        }
+        else 
+        {
+            System.out.println("---------- OUT OF BOUNDS ------------");
         }
     }
 
