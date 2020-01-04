@@ -67,7 +67,7 @@ public class CompressImage
 
     private void addToArr(HuffmanNode input)
     {
-        // System.out.println("Pixel: " + input.pVal + " has string: " + Integer.toBinaryString(input.bitString));
+        System.out.println("Pixel: " + input.pVal + " has string: " + Integer.toBinaryString(input.bitString));
         bStringArr[this.ptrIndex] = input;
         ptrIndex++;
     }
@@ -78,49 +78,12 @@ public class CompressImage
         {
             if (pVal == bStringArr[i].pVal)
             {
-                System.out.print("Accepted pixel :" + bStringArr[i].pVal);
+                // System.out.print("Accepted pixel :" + bStringArr[i].pVal);
                 return bStringArr[i];
             }
         }
         return null;
     }
-
-    // private boolean writeByte(int add)
-    // {
-
-    //     // System.out.print(" with string " + Integer.toBinaryString(add));
-    //     int i = 32;
-    //     while (i > 0)
-    //     {
-    //         i--;
-
-    //         if (((add>>(i-1)) & 1) == 1)
-    //         {
-    //             i--;
-    //             // System.out.println(", offset = " + i);
-    //             break;
-    //         }
-    //     }
-
-    //     while (i>0)
-    //     {
-    //         if (this.length == 8)
-    //         {
-    //             return true;
-    //         }
-
-    //         this.length += 1;
-    //         this.write.setBitString(this.write.getBitString() << 1);
-
-    //         // System.out.print("(" + Integer.toBinaryString((add >> (i-1)) & 1) +") -> ");
-
-    //         this.write.setBitString((this.write.getBitString()) | ((add >> (i-1)) & 1));
-
-    //         // System.out.println(Integer.toBinaryString(this.write.getBitString())  + " " + length);
-    //         i--;
-    //     }
-    //     return false;
-    // }
 
     private void writeFile()
     {
@@ -139,7 +102,7 @@ public class CompressImage
             for (int i = 0 ; i < pixels.length; i++)
             {
                 HuffmanNode in = getBits(pixels[i]);
-                System.out.print(" with string " + Integer.toBinaryString(in.getBitString()));
+                // System.out.print(" with string " + Integer.toBinaryString(in.getBitString()));
                 int pos = 32;
                 while (((in.getBitString()>>(pos-1)) & 1) != 1)
                 {
@@ -147,7 +110,7 @@ public class CompressImage
                 }
 
                 pos--;
-                System.out.println(", offset = " + pos);
+                // System.out.println(", offset = " + pos);
 
                 while (pos > 0)
                 {
@@ -159,21 +122,22 @@ public class CompressImage
                         this.write.setBitString(0);
                     }
                     
-                    else if (this.length < 8 && i == pixels.length-1)
-                    {
-                        System.out.println("FINAL WRITE: " + Integer.toBinaryString((this.write.getBitString() << (8-pos)) & 0xff) + " " + i);
-                        out.write( (byte) ((this.write.getBitString() << pos) & 0xff) );
-
-                    }
 
                     this.length += 1;
                     this.write.setBitString(this.write.getBitString() << 1);
 
-                    System.out.print("(" + Integer.toBinaryString((in.getBitString() >> (pos-1)) & 1) +") -> ");
+                    // System.out.print("(" + Integer.toBinaryString((in.getBitString() >> (pos-1)) & 1) +") -> ");
 
                     this.write.setBitString((this.write.getBitString()) | ((in.getBitString() >> (pos-1)) & 1));
 
-                    System.out.println(Integer.toBinaryString(this.write.getBitString())  + " " + length);
+                    // System.out.println(Integer.toBinaryString(this.write.getBitString())  + " " + length);
+
+                    if (pos == 1 && this.length <= 8 && i == pixels.length-1)
+                    {
+                        System.out.println("FINAL WRITE: " + Integer.toBinaryString((this.write.getBitString() << (8-length)) & 0xff) + " " + i);
+                        out.write( (byte) ((this.write.getBitString() << (8-length)) & 0xff) );
+                    }
+
                     pos--;
                 }
             }

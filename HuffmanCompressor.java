@@ -1,3 +1,5 @@
+import java.awt.image.BufferedImage;
+
 public class HuffmanCompressor
 {
     HeapToHuff heap;
@@ -6,8 +8,9 @@ public class HuffmanCompressor
     HuffmanNode huffTreeTurned;
     CompressImage comp;
     DecompressImage decomp;
+    BufferedImage imgFin;
 
-    String imgIn = "16x16";
+    String imgIn = "512x288";
     String treeOut = "tree2.fl";
     String imgOut = "compressed.xl";
 

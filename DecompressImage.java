@@ -14,6 +14,8 @@ public class DecompressImage
     private File image;
     private byte[] bArray;
     private int fx = 0, fy = 0;
+    private byte bit;
+    private int pos = 8;
 
     public DecompressImage(HuffmanNode tree, String TREEFILEPATH, String IMGFILEPATH)
     {
@@ -25,11 +27,11 @@ public class DecompressImage
     private BufferedImage drawImage(String imageFile, HuffmanNode node)
     {
         this.bfrdImage = new BufferedImage(this.x, this.y, BufferedImage.TYPE_INT_RGB);
-        bArray = new byte[x*y];
+        bArray = new byte[(int) image.length()];
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
-            in.read(bArray, 9, ((int) image.length()/8));
+            in.read(bArray);
             in.close();
 
         } catch (FileNotFoundException e) {
@@ -38,42 +40,60 @@ public class DecompressImage
             System.out.println(e);
         }
 
-        int x = 0;
+        int string = 0;
         HuffmanNode head = node;
-        
+        int i = 8;
 
-        for (int i = 0; i < bArray.length; i++)
+        while (i < bArray.length)
         {
-            while (x > 0)
+            
+            this.bit = bArray[i];
+            // System.out.println("Current: " + Integer.toBinaryString(((bit)) & 0xff) + " at index " + (i-8));
+
+            while (this.pos > 0)
             {
-                // x = traverseTree(node, bArray[i], x);
                 if (node.right == null && node.left == null)
                 {
-                    System.out.println("leaf node at " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at " +( fx+1 )+ ", " +( fy+1));
+                    // System.out.println(Integer.toBinaryString(string) + " pos: " + pos);
+                    // System.out.println("leaf node " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at " +( fx+1 )+ ", " +( fy+1));
                     Color pix = new Color(node.pVal);
                     bfrdImage.setRGB(this.fx, this.fy, pix.getRGB());
-                    imgDims();
-                    
+                    imgDims(); 
                     node = head;
                     break;
                 }
-                else if ((((bArray[i]) >> (x-1)) & 1 ) == 0)
+
+                else if ((((bit) >> (pos-1)) & 1 ) == 0)
                 {
+                    string = string << 1;
+                    // System.out.println(Integer.toBinaryString(string) + " pos: " + pos);
                     node = node.left;
-                    x--;
+                    pos--;
                 }
-                else if ((((bArray[i]) >> (x-1)) & 1 ) == 1)
+                else if ((((bit) >> (pos-1)) & 1 ) == 1)
                 {
+                    string = string << 1 | 1;
+                    // System.out.println(Integer.toBinaryString(string) +" pos: " + pos);
                     node = node.right;
-                    x--;
+                    pos--;
                 }
             }
-            System.out.println("STRING: " + Integer.toBinaryString(bArray[i]) + " at index " + i);
-            x = 8;
+
+            if (this.pos == 0)
+            {
+                i++;
+                this.pos = 8;
+                // System.out.println("pos reset");
+            }
+
+            // for tracking onli
+            string=0;
         }
 
         return bfrdImage;
     }
+        
+        
 
     private void imgDims()
     {
