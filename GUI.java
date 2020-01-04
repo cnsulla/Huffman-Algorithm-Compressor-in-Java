@@ -36,6 +36,7 @@ public class GUI extends JFrame implements ActionListener{
     private HuffmanNode huffTreeOrig;
     private CompressImage comp;
     private DecompressImage decomp;
+    private String name;
 
     public static void main(String[] args) 
     {
@@ -70,8 +71,8 @@ public class GUI extends JFrame implements ActionListener{
     	        files.setFileFilter(new FileNameExtensionFilter(".HUFF files", "huff", "HUFF"));
     	    	break;
     	    case 3: //KECS File
-    	    	files.setDialogTitle("Open Image (KECS File only");
-    	    	files.setFileFilter(new FileNameExtensionFilter(".KECS files", "kecs", "KECS"));
+    	    	files.setDialogTitle("Open Image (XL File only");
+    	    	files.setFileFilter(new FileNameExtensionFilter(".XL files", "xl", "XL"));
     	}
 
     	int choice = files.showOpenDialog(null);
@@ -276,10 +277,10 @@ public class GUI extends JFrame implements ActionListener{
             {
                 compressImageButton.setEnabled(true);
 
-                String name = file.getName();
+                name = file.getName();
                 System.out.println(name);
                 int pos = name.lastIndexOf(".");
-                name = name.substring(0,pos);
+              	name = name.substring(0,pos);
                 System.out.println(name);
 
                 heap = new HeapToHuff(name);
@@ -288,7 +289,7 @@ public class GUI extends JFrame implements ActionListener{
             }
         }
 
-        if(e.getSource() == trainExistingButton)
+        /* if(e.getSource() == trainExistingButton)
         {
             file = getFile(2);
 
@@ -297,23 +298,24 @@ public class GUI extends JFrame implements ActionListener{
                 compressImageButton.setEnabled(true);    
                 directory = getDirectory();
             }
-        }
+        }*/
 
         if(e.getSource() == compressImageButton)
         {
             showImageButton.setEnabled(true);
-            file = getFile(2);
-
-            if(file != null)
-            {
-                //DIRECTORY
-                directory = getDirectory();
-            }
+            comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, name, "hello.xl");
         }
 
         if(e.getSource() == showImageButton)
         {
-            file = getFile(2);
+            
+        	file = getFile(3);
+        	decomp = new DecompressImage(huffTreeOrig, "mama", "hello.xl");
+        	compressedLabel.setVisible(false);
+            compressedPanel.setBackground(null);
+        	compressedImage.setIcon(new ImageIcon(decomp.drawImage("hello.xl", huffTreeOrig)));
+            informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
+            /*file = getFile(2);
 
             if(file != null)
             {
@@ -333,7 +335,7 @@ public class GUI extends JFrame implements ActionListener{
         		    compressedScroll.setViewportView(compressedImage);
 
             	}
-            }
+            }*/
         }
 
         if(e.getSource() == resetButton)
