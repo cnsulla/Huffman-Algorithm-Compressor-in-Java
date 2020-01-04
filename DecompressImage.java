@@ -27,7 +27,7 @@ public class DecompressImage
     private BufferedImage drawImage(String imageFile, HuffmanNode node)
     {
         this.bfrdImage = new BufferedImage(this.x, this.y, BufferedImage.TYPE_INT_RGB);
-        bArray = new byte[(int) image.length()];
+        bArray = new byte[(int) image.length()-8];
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
