@@ -13,6 +13,7 @@ public class DecompressImage
     private BufferedImage bfrdImage;
     private File image;
     private byte[] bArray;
+    private int fx = 0, fy = 0;
 
     public DecompressImage(HuffmanNode tree, String TREEFILEPATH, String IMGFILEPATH)
     {
@@ -24,11 +25,11 @@ public class DecompressImage
     private BufferedImage drawImage(String imageFile, HuffmanNode node)
     {
         this.bfrdImage = new BufferedImage(this.x, this.y, BufferedImage.TYPE_INT_RGB);
-        bArray = new byte[this.x*this.y];
+        bArray = new byte[x*y];
 
         try(FileInputStream in = new FileInputStream(imageFile)){
 
-            in.read(bArray, 8, -1);
+            in.read(bArray, 9, ((int) image.length()/8));
             in.close();
 
         } catch (FileNotFoundException e) {
@@ -37,36 +38,78 @@ public class DecompressImage
             System.out.println(e);
         }
 
-        int i = 0;
+        int x = 0;
+        HuffmanNode head = node;
+        
 
-        while (i < bArray.length)
+        for (int i = 0; i < bArray.length; i++)
         {
-            traverseTree(node, bArray[i], 8);
-            i++;
+            while (x > 0)
+            {
+                // x = traverseTree(node, bArray[i], x);
+                if (node.right == null && node.left == null)
+                {
+                    System.out.println("leaf node at " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at " +( fx+1 )+ ", " +( fy+1));
+                    Color pix = new Color(node.pVal);
+                    bfrdImage.setRGB(this.fx, this.fy, pix.getRGB());
+                    imgDims();
+                    
+                    node = head;
+                    break;
+                }
+                else if ((((bArray[i]) >> (x-1)) & 1 ) == 0)
+                {
+                    node = node.left;
+                    x--;
+                }
+                else if ((((bArray[i]) >> (x-1)) & 1 ) == 1)
+                {
+                    node = node.right;
+                    x--;
+                }
+            }
+            System.out.println("STRING: " + Integer.toBinaryString(bArray[i]) + " at index " + i);
+            x = 8;
         }
 
         return bfrdImage;
     }
 
-    private void traverseTree(HuffmanNode node, byte bit, int off)
+    private void imgDims()
     {
-        if (node.right == null && node.left == null)
+        if (fx < x-1)
         {
-            Color pix = new Color(node.pVal);
-            bfrdImage.setRGB(x, y, pix.getRGB());
-            return;
+            fx++;
         }
-
-        else if (((bit >> (off-1)) & 1) == 0)
+        else if (fy < y-1)
         {
-            traverseTree(node.left, (byte) (bit >> 1), off--);
-        }
-
-        else if (((bit >> (off-1)) & 1) == 1)
-        {
-            traverseTree(node.right, (byte) (bit >> 1), off--);
+            fx = 0;
+            fy++;
         }
     }
+
+    // private int traverseTree(HuffmanNode node, byte bit, int off)
+    // {
+    //     if (node.right == null && node.left == null)
+    //     {
+    //         System.out.println("leaf node at " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at x, y");
+    //         Color pix = new Color(node.pVal);
+    //         bfrdImage.setRGB(x, y, pix.getRGB());
+    //         return off;
+    //     }
+
+    //     else if (((bit >> (off-1)) & 1) == 0)
+    //     {
+    //         traverseTree(node.left, (byte) (bit >> 1), off--);
+    //     }
+
+    //     else if (((bit >> (off-1)) & 1) == 1)
+    //     {
+    //         traverseTree(node.right, (byte) (bit >> 1), off--);
+    //     }
+
+    //     return 0;
+    // }
 
     private void readImgDimensions(File imageFile)
     {
@@ -90,7 +133,7 @@ public class DecompressImage
             dimensions[i] = bb.getInt();
             System.out.print(dimensions[i] + " ");
         }
-
+        System.out.println(" ");
         this.x = dimensions[0];
         this.y = dimensions[1];
     }
