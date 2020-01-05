@@ -24,6 +24,7 @@ public class ImageScan
 	{
         try {
             f = new File(FILEPATH + ".png");
+            System.out.println("File in: " + f.getCanonicalPath());
             img = ImageIO.read(f);
         } catch (IOException e) {
             System.out.println("Error: " + e);

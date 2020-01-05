@@ -66,12 +66,12 @@ public class DeserializeTree
 
         if (key > min && key < max) {
             root = new HuffmanNode(key);
-            // System.out.println("Node will have value "+key+"!");
+            System.out.println("Node will have value "+key+"!");
             preIndex.index = preIndex.index + 1;
 
             if (preIndex.index < size)
             {
-                // System.out.println("Yay we're setting the left and right trees now!");
+                System.out.println("Yay we're setting the left and right trees now!");
                 root.left = makeTree(intArr, preIndex, intArr[preIndex.index], min, key, size);
                 root.right = makeTree(intArr, preIndex, intArr[preIndex.index], key, max, size);
             }
