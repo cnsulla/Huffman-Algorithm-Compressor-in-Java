@@ -277,11 +277,16 @@ public class GUI extends JFrame implements ActionListener{
             {
                 compressImageButton.setEnabled(true);
 
-                name = file.getName();
-                System.out.println(name);
-                int pos = name.lastIndexOf(".");
-              	name = name.substring(0,pos);
-                System.out.println(name);
+                try {
+                    name = file.getCanonicalPath();
+                    System.out.println(name);
+                } catch (IOException ex) {
+                    System.out.println("Error: " + ex);
+                }
+                
+                // int pos = name.lastIndexOf(".");
+              	// name = name.substring(0,pos);
+                // System.out.println(name);
 
                 heap = new HeapToHuff(name);
                 huffTreeOrig = heap.getHuffmanTree();

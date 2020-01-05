@@ -23,7 +23,7 @@ public class ImageScan
 	public void getImage(String FILEPATH)
 	{
         try {
-            f = new File(FILEPATH + ".png");
+            f = new File(FILEPATH);
             System.out.println("File in: " + f.getCanonicalPath());
             img = ImageIO.read(f);
         } catch (IOException e) {
