@@ -29,7 +29,7 @@ public class HuffmanCompressor
         // de.printInorder(huffTreeTurned);
 
         System.out.println("Image file writing...\n-----------");
-        comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, imgIn, imgOut);
+        // comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, imgIn, imgOut);
         System.out.println("Finished... \n-----------");
 
         decomp = new DecompressImage(treeOut, imgOut);

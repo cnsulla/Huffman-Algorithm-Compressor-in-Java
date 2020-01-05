@@ -120,29 +120,6 @@ public class DecompressImage
         }
     }
 
-    // private int traverseTree(HuffmanNode node, byte bit, int off)
-    // {
-    //     if (node.right == null && node.left == null)
-    //     {
-    //         System.out.println("leaf node at " + node.pVal + " with bit string: " + Integer.toBinaryString(node.bitString) + " printing at x, y");
-    //         Color pix = new Color(node.pVal);
-    //         bfrdImage.setRGB(x, y, pix.getRGB());
-    //         return off;
-    //     }
-
-    //     else if (((bit >> (off-1)) & 1) == 0)
-    //     {
-    //         traverseTree(node.left, (byte) (bit >> 1), off--);
-    //     }
-
-    //     else if (((bit >> (off-1)) & 1) == 1)
-    //     {
-    //         traverseTree(node.right, (byte) (bit >> 1), off--);
-    //     }
-
-    //     return 0;
-    // }
-
     private void readImgDimensions(File imageFile)
     {
         byte[] bArray = new byte[8];
