@@ -67,7 +67,7 @@ public class GUI extends JFrame implements ActionListener{
 	            files.setFileFilter(new FileNameExtensionFilter(".PNG files", "png", "PNG"));
     	        break;
 	    	case 2: //HUFF File
-	            files.setDialogTitle("Choose Huffman File");
+	            fijijijles.setDialogTitle("Choose Huffman File");
     	        files.setFileFilter(new FileNameExtensionFilter(".HUFF files", "huff", "HUFF"));
     	    	break;
     	    case 3: //KECS File
