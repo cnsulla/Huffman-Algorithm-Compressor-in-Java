@@ -15,7 +15,7 @@ public class CompressImage
     private String DESTINATION;
     
 
-    public CompressImage(HuffmanNode node, int size, String IMGFILEPATH, String DEST)
+    public CompressImage(HuffmanNode node, int size, String IMGFILEPATH, String DEST, String FILENAME)
     {
         this.DESTINATION = DEST;
         bStringArr = new HuffmanNode[size];
@@ -23,7 +23,10 @@ public class CompressImage
 
         readImage(IMGFILEPATH, node.freq);
         this.write.setBitString(0);
-        writeFile();
+
+        int pos = FILENAME.lastIndexOf(".");
+        FILENAME = FILENAME.substring(0,pos);
+        writeFile(FILENAME);
     }
 
     private void readImage(String FILEPATH, int size)
@@ -86,10 +89,10 @@ public class CompressImage
         return null;
     }
 
-    private void writeFile()
+    private void writeFile(String FILENAME)
     {
-        try(FileOutputStream out = new FileOutputStream(DESTINATION+"\\compressed.XL", true)){
-            System.out.println("Output compressed.XL to: " + DESTINATION+"\\compressed.XL");
+        try(FileOutputStream out = new FileOutputStream(DESTINATION+"\\" + FILENAME +".XL", true)){
+            System.out.println("Output compressed.XL to: " + DESTINATION+"\\" + FILENAME + ".XL");
             out.write( (byte) (xSize >> 24 & 0xff));
             out.write( (byte) (xSize >> 16 & 0xff));
             out.write( (byte) (xSize >> 8 & 0xff));

@@ -12,7 +12,6 @@ public class GUI extends JFrame implements ActionListener{
     private JButton showImageButton;
     private JButton compressImageButton;
     private JButton trainNewButton;
-    private JButton trainExistingButton;
     private JButton resetButton;
     private JPanel buttons1;
     private JPanel buttons2;
@@ -36,7 +35,7 @@ public class GUI extends JFrame implements ActionListener{
     private HuffmanNode huffTreeOrig;
     private CompressImage comp;
     private DecompressImage decomp;
-    private String name, outputPath;
+    private String originalPNG, name, outputPath;
 
     public static void main(String[] args) 
     {
@@ -66,12 +65,12 @@ public class GUI extends JFrame implements ActionListener{
     			files.setDialogTitle("Open Image (PNG File only)");
 	            files.setFileFilter(new FileNameExtensionFilter(".PNG files", "png", "PNG"));
     	        break;
-	    	case 2: //HUFF File
-	            files.setDialogTitle("Choose Huffman File");
-    	        files.setFileFilter(new FileNameExtensionFilter(".HUFF files", "huff", "HUFF"));
-    	    	break;
-    	    case 3: //KECS File
-    	    	files.setDialogTitle("Open Image (XL File only");
+	    	// case 2: //HUFF File
+	            // files.setDialogTitle("Choose Huffman File");
+    	        // files.setFileFilter(new FileNameExtensionFilter(".HUFF files", "huff", "HUFF"));
+    	    	// break;
+    	    case 2: //XL File
+    	    	files.setDialogTitle("Open Image (XL File only)");
     	    	files.setFileFilter(new FileNameExtensionFilter(".XL files", "xl", "XL"));
     	}
 
@@ -114,7 +113,7 @@ public class GUI extends JFrame implements ActionListener{
         //2nd - Buttons at the bottom
         buttons2 = new JPanel();
         buttons2.setBounds(0, 500, 790,50);
-        buttons2.setLayout(new GridLayout(1,3));
+        buttons2.setLayout(new GridLayout(1,2));
 
         //3rd - Images Display
         labels = new JPanel();
@@ -167,14 +166,6 @@ public class GUI extends JFrame implements ActionListener{
         trainNewButton.setFocusPainted(false);        
         trainNewButton.setEnabled(false);
         trainNewButton.addActionListener(this);
-
-        trainExistingButton = new JButton("Train Existing Huffman Tree");
-        trainExistingButton.setFont(font);
-        trainExistingButton.setBackground(Color.BLACK);
-        trainExistingButton.setForeground(Color.WHITE);
-        trainExistingButton.setFocusPainted(false);        
-        trainExistingButton.setEnabled(false);
-        trainExistingButton.addActionListener(this);        
 
         resetButton = new JButton("Reset");
         resetButton.setFont(font);
@@ -229,7 +220,6 @@ public class GUI extends JFrame implements ActionListener{
         buttons1.add(compressImageButton);
         buttons1.add(showImageButton);
         buttons2.add(trainNewButton);
-        buttons2.add(trainExistingButton);
         buttons2.add(resetButton);
         add(labels);
         add(buttons1);
@@ -247,7 +237,9 @@ public class GUI extends JFrame implements ActionListener{
             
            	if(file != null)
             {
-           		informationTextField.setText("File Size: " + getFileSize(file));
+                originalPNG = file.getName();
+                System.out.println(originalPNG);
+                informationTextField.setText("File Size: " + getFileSize(file));
 
                 //ORIGINAL LABEL
                	originalLabel.setVisible(false);
@@ -265,8 +257,8 @@ public class GUI extends JFrame implements ActionListener{
                	//Enabling new buttons
                	resetButton.setEnabled(true);
                	trainNewButton.setEnabled(true);
-               	trainExistingButton.setEnabled(true);
-           	}
+           	    showImageButton.setEnabled(true);
+            }
         }
 
         if(e.getSource() == trainNewButton)
@@ -286,7 +278,7 @@ public class GUI extends JFrame implements ActionListener{
 
                 try {
                     name = file.getCanonicalPath();
-                    // System.out.println("image in: " + name);
+                    //System.out.println("image in: " + name);
                 } catch (IOException ex) {
                     System.out.println("Error: " + ex);
                 }
@@ -301,17 +293,6 @@ public class GUI extends JFrame implements ActionListener{
             }
         }
 
-        //  if(e.getSource() == trainExistingButton)
-        // {
-        //     file = getFile(2);
-
-        //     if(file != null)
-        //     {
-        //         compressImageButton.setEnabled(true);    
-        //         directory = getDirectory();
-        //     }
-        // }
-
         if(e.getSource() == compressImageButton)
         {
             directory = getDirectory();
@@ -325,46 +306,23 @@ public class GUI extends JFrame implements ActionListener{
                     System.out.println("Error: " + ex);
                 }
                 
+                comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, name, outputPath, originalPNG);
             }
-
-            showImageButton.setEnabled(true);
-            comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, name, outputPath);
         }
 
         if(e.getSource() == showImageButton)
         {
-
-            
-            
-            file = getFile(3);
+            file = getFile(2);
 
         	decomp = new DecompressImage("", file.getAbsolutePath());
         	compressedLabel.setVisible(false);
             compressedPanel.setBackground(null);
         	compressedImage.setIcon(new ImageIcon(decomp.drawImage(file.getAbsolutePath(), huffTreeOrig)));
-            informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
-
-            // file = getFile(2);
-
-            // if(file != null)
-            // {
-            // 	file = getFile(3);
-            // 	if(file != null)
-            // 	{
-            // 		informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
-            		
-
-            // 		compressedLabel.setVisible(false);
-            // 		compressedPanel.setBackground(null);
-
-		    //         compressedImage.setIcon(new ImageIcon(file.getAbsolutePath()));
-        	// 	    compressedPanel.add(compressedScroll);
+            compressedPanel.add(compressedScroll);
             
-		    //         compressedScroll.setPreferredSize(new Dimension(395,395));
-        	// 	    compressedScroll.setViewportView(compressedImage);
-
-            // 	}
-            // }
+            compressedScroll.setPreferredSize(new Dimension(395,395));
+            compressedScroll.setViewportView(compressedImage);
+            informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
         }
 
         if(e.getSource() == resetButton)
@@ -372,6 +330,8 @@ public class GUI extends JFrame implements ActionListener{
             file = null;
             directory = null;
             informationTextField.setText("Huffman Image Compressor\t\t           Sulla - Eclipse (2019)");
+            comp = null;
+            decomp = null;
 
             originalLabel.setVisible(true);
             compressedLabel.setVisible(true);
@@ -379,7 +339,6 @@ public class GUI extends JFrame implements ActionListener{
             compressedPanel.setBackground(Color.BLACK);
 
             trainNewButton.setEnabled(false);
-            trainExistingButton.setEnabled(false);
             compressImageButton.setEnabled(false);
             showImageButton.setEnabled(false);
             resetButton.setEnabled(false);
