@@ -9,7 +9,8 @@ public class SerializeTree
     public SerializeTree(HuffmanNode node, String directory)
     {
         try { 
-            f = new File(directory);
+            f = new File(directory+"\\treefile.HUFF");
+            System.out.println("Output treefile.HUFF to: " + directory + "\\treefile.HUFF");
             f.createNewFile();
         }
         catch (Exception e) {

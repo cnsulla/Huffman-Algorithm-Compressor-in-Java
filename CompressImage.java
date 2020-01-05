@@ -30,7 +30,8 @@ public class CompressImage
     {
 
         try {
-            File f = new File(FILEPATH + ".png");
+            File f = new File(FILEPATH);
+            
             this.img = ImageIO.read(f);
         } catch (IOException e) {
             System.out.println("Error: " + e);
@@ -87,8 +88,8 @@ public class CompressImage
 
     private void writeFile()
     {
-        try(FileOutputStream out = new FileOutputStream(DESTINATION, true)){
-
+        try(FileOutputStream out = new FileOutputStream(DESTINATION+"\\compressed.XL", true)){
+            System.out.println("Output compressed.XL to: " + DESTINATION+"\\compressed.XL");
             out.write( (byte) (xSize >> 24 & 0xff));
             out.write( (byte) (xSize >> 16 & 0xff));
             out.write( (byte) (xSize >> 8 & 0xff));

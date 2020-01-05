@@ -6,6 +6,7 @@ public class HeapToHuff
 
     public HeapToHuff(String FILENAME)
     {
+        System.out.println("received path: "+FILENAME);
         getPArray(FILENAME);
     }
 

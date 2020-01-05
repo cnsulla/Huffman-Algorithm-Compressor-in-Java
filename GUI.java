@@ -36,7 +36,7 @@ public class GUI extends JFrame implements ActionListener{
     private HuffmanNode huffTreeOrig;
     private CompressImage comp;
     private DecompressImage decomp;
-    private String name;
+    private String name, outputPath;
 
     public static void main(String[] args) 
     {
@@ -278,8 +278,15 @@ public class GUI extends JFrame implements ActionListener{
                 compressImageButton.setEnabled(true);
 
                 try {
+                    outputPath = directory.getCanonicalPath();
+                    System.out.println("Outputtinng to: " + outputPath);
+                } catch (IOException ex) {
+                    System.out.println("Error: " + ex);
+                }
+
+                try {
                     name = file.getCanonicalPath();
-                    System.out.println(name);
+                    // System.out.println("image in: " + name);
                 } catch (IOException ex) {
                     System.out.println("Error: " + ex);
                 }
@@ -290,7 +297,7 @@ public class GUI extends JFrame implements ActionListener{
 
                 heap = new HeapToHuff(name);
                 huffTreeOrig = heap.getHuffmanTree();
-                SerializeTree en = new SerializeTree(huffTreeOrig, "treefile.fl");
+                SerializeTree en = new SerializeTree(huffTreeOrig, outputPath);
             }
         }
 
@@ -307,18 +314,34 @@ public class GUI extends JFrame implements ActionListener{
 
         if(e.getSource() == compressImageButton)
         {
+            directory = getDirectory();
+            
+            if(directory != null)
+            {
+
+                try {
+                    outputPath = directory.getCanonicalPath();
+                } catch (IOException ex) {
+                    System.out.println("Error: " + ex);
+                }
+                
+            }
+
             showImageButton.setEnabled(true);
-            comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, name, "hello.xl");
+            comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, name, outputPath);
         }
 
         if(e.getSource() == showImageButton)
         {
+
             
-        	file = getFile(3);
-        	decomp = new DecompressImage("", "hello.xl");
+            
+            file = getFile(3);
+
+        	decomp = new DecompressImage("", file.getAbsolutePath());
         	compressedLabel.setVisible(false);
             compressedPanel.setBackground(null);
-        	compressedImage.setIcon(new ImageIcon(decomp.drawImage("hello.xl", huffTreeOrig)));
+        	compressedImage.setIcon(new ImageIcon(decomp.drawImage(file.getAbsolutePath(), huffTreeOrig)));
             informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
 
             // file = getFile(2);
