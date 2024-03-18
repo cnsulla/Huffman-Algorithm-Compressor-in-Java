@@ -37,7 +37,7 @@ public class GUI extends JFrame implements ActionListener{
     private DecompressImage decomp;
     private String originalPNG, name, outputPath;
 
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         new GUI();
     }
@@ -78,7 +78,7 @@ public class GUI extends JFrame implements ActionListener{
 
     	if(choice == JFileChooser.CANCEL_OPTION)
     		return null;
-    	else return files.getSelectedFile();	    
+    	else return files.getSelectedFile();
     }
 
     //IF file selection mode is DIRECTORIES ONLY
@@ -94,7 +94,7 @@ public class GUI extends JFrame implements ActionListener{
         else return files.getSelectedFile();
     }
 
-    public GUI() 
+    public GUI()
     {
         super("Huffman Image Compressor");
         setSize(804,585);
@@ -141,7 +141,7 @@ public class GUI extends JFrame implements ActionListener{
         openImageButton.setBackground(Color.BLACK);
         openImageButton.setForeground(Color.WHITE);
         openImageButton.setFocusPainted(false);
-        openImageButton.addActionListener(this); 
+        openImageButton.addActionListener(this);
 
         showImageButton = new JButton("Show Compressed Image");
         showImageButton.setFont(font);
@@ -155,7 +155,7 @@ public class GUI extends JFrame implements ActionListener{
         compressImageButton.setFont(font);
         compressImageButton.setBackground(Color.BLACK);
         compressImageButton.setForeground(Color.WHITE);
-        compressImageButton.setFocusPainted(false);        
+        compressImageButton.setFocusPainted(false);
         compressImageButton.setEnabled(false);
         compressImageButton.addActionListener(this);
 
@@ -163,7 +163,7 @@ public class GUI extends JFrame implements ActionListener{
         trainNewButton.setFont(font);
         trainNewButton.setBackground(Color.BLACK);
         trainNewButton.setForeground(Color.WHITE);
-        trainNewButton.setFocusPainted(false);        
+        trainNewButton.setFocusPainted(false);
         trainNewButton.setEnabled(false);
         trainNewButton.addActionListener(this);
 
@@ -171,14 +171,14 @@ public class GUI extends JFrame implements ActionListener{
         resetButton.setFont(font);
         resetButton.setBackground(Color.BLACK);
         resetButton.setForeground(Color.WHITE);
-        resetButton.setFocusPainted(false);                
+        resetButton.setFocusPainted(false);
         resetButton.setEnabled(false);
         resetButton.addActionListener(this);
 
         //LABELS
         //Background Images
-        originalBG = new ImageIcon("OriginalBG.png");
-        compressedBG = new ImageIcon("CompressedBG.png");
+        originalBG = new ImageIcon("assets/OriginalBG.png");
+        compressedBG = new ImageIcon("assets/CompressedBG.png");
 
         originalLabel = new JLabel();
         originalLabel.setIcon(originalBG);
@@ -234,7 +234,7 @@ public class GUI extends JFrame implements ActionListener{
         if(e.getSource() == openImageButton)
         {
             file = getFile(1);
-            
+
            	if(file != null)
             {
                 originalPNG = file.getName();
@@ -248,12 +248,12 @@ public class GUI extends JFrame implements ActionListener{
                	//JLABEL for Original Image
                	originalImage.setIcon(new ImageIcon(file.getAbsolutePath()));
                	originalImage.setOpaque(false);
-                	
+
                	originalPanel.add(originalScroll);
                	originalScroll.setPreferredSize(new Dimension(392,395));
                	originalScroll.setOpaque(false);
                	originalScroll.setViewportView(originalImage);
-                
+
                	//Enabling new buttons
                	resetButton.setEnabled(true);
                	trainNewButton.setEnabled(true);
@@ -264,7 +264,7 @@ public class GUI extends JFrame implements ActionListener{
         if(e.getSource() == trainNewButton)
         {
             directory = getDirectory();
-            
+
             if(directory != null)
             {
                 compressImageButton.setEnabled(true);
@@ -282,7 +282,7 @@ public class GUI extends JFrame implements ActionListener{
                 } catch (IOException ex) {
                     System.out.println("Error: " + ex);
                 }
-                
+
                 // int pos = name.lastIndexOf(".");
               	// name = name.substring(0,pos);
                 // System.out.println(name);
@@ -296,7 +296,7 @@ public class GUI extends JFrame implements ActionListener{
         if(e.getSource() == compressImageButton)
         {
             directory = getDirectory();
-            
+
             if(directory != null)
             {
 
@@ -305,7 +305,7 @@ public class GUI extends JFrame implements ActionListener{
                 } catch (IOException ex) {
                     System.out.println("Error: " + ex);
                 }
-                
+
                 comp = new CompressImage(huffTreeOrig, huffTreeOrig.freq, name, outputPath, originalPNG);
             }
         }
@@ -319,7 +319,7 @@ public class GUI extends JFrame implements ActionListener{
             compressedPanel.setBackground(null);
         	compressedImage.setIcon(new ImageIcon(decomp.drawImage(file.getAbsolutePath(), huffTreeOrig)));
             compressedPanel.add(compressedScroll);
-            
+
             compressedScroll.setPreferredSize(new Dimension(395,395));
             compressedScroll.setViewportView(compressedImage);
             informationTextField.setText(informationTextField.getText() + "\t\t             File Size: " + getFileSize(file));
