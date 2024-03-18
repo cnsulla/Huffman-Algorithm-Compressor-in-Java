@@ -1,5 +1,8 @@
 Huffman Algorithm Image Compressor in Java
 
+How to run:
+Open GUI.jar file
+
 Steps:
 1. Click "Open PNG Image" and select a PNG file.
 2. Click "Train New Huffman Tree" and select location to place .HUFF huffman tree file.
